@@ -6,11 +6,19 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 
 fun main() {
-    embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
-        .start(wait = true)
+    val port = System.getenv()
+        .getOrDefault("SERVER_PORT", "8080")
+        .toInt()
+
+    embeddedServer(
+        Netty,
+        port = port,
+        module = Application::module
+    ).start(wait = true)
 }
 
 fun Application.module() {
     configureSerialization()
+    configureDatabases()
     configureRouting()
 }
