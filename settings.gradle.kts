@@ -1,1 +1,1 @@
-rootProject.name = "br.com.amartins.user-service"
+rootProject.name = "com.example.github-actions"
