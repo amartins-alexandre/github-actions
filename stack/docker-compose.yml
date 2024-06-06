@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:12
+    container_name: users-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123124
+      POSTGRES_DB: users
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    networks:
+      - ktor-users
+
+networks:
+    ktor-users:
+        driver: bridge
+
+volumes:
+    postgres:
