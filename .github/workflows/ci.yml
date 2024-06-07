@@ -1,0 +1,22 @@
+name: CI
+run-name: CI
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v2
+
+        - name: Docker Hub Login
+          uses: docker/login-action@v2
+          with:
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD }}
+
+        - name: Build Docker Image
+          uses: docker/build-push-action@v2
+          with:
+              context: ./stack
+              file: Dockerfile
+              push: true
+              tags: ${{ secrets.DOCKER_USERNAME }}/my-docker-image:latest
+
