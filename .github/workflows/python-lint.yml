@@ -25,4 +25,4 @@ jobs:
           - name: Run Python lint
             run: |
               pipenv install black
-              black .
+              pipenv run black .
