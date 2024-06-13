@@ -6,11 +6,47 @@ on:
       - main
   workflow_dispatch:
 jobs:
-  docker:
-    name: Docker Image
-    uses: amartins-alexandre/github-actions/.github/workflows/docker.yml@main
-    with:
-      docker-username: ${{ secrets.DOCKER_USERNAME }}
-      docker-password: ${{ secrets.DOCKER_PASSWORD }}
-      docker-tag: ${{ secrets.DOCKER_USERNAME }}/user-fastapi
-      version: 0.1.0
+  project-version:
+    name: Project Version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Read project version
+        id: read-version
+        run: echo ::set-output name=version::$(cat .project-version)
+
+#  python-lint:
+#    name: Python Lint
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#
+#      - name: Python Lint
+#        uses: amartins-alexandre/github-actions/.github/workflows/python-lint.yml@main
+#
+#  python-test:
+#    name: Python Test
+#    runs-on: ubuntu-latest
+#    needs:
+#      - python-lint
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#
+#      - name: Python Test
+#        uses: amartins-alexandre/github-actions/.github/workflows/python-test.yml@main
+#
+#  docker:
+#    name: Docker Image
+#    uses: amartins-alexandre/github-actions/.github/workflows/docker.yml@main
+#    needs:
+#      - python-test
+#      - project-version
+#    with:
+#      docker-username: ${{ secrets.DOCKER_USERNAME }}
+#      docker-password: ${{ secrets.DOCKER_PASSWORD }}
+#      docker-tag: ${{ secrets.DOCKER_USERNAME }}/user-fastapi
+#      version: ${{ needs.project-version.outputs.version }}
