@@ -15,7 +15,10 @@ jobs:
 
       - name: Read project version
         id: project-version
-        run: echo ::set-output name=version::$(cat .project-version)
+        run: echo ::set-output name=version::$(cat ./.project-version)
+
+      - name: Echo Version
+        run: echo "${{ steps.project-version.outputs.version }}"
 
 #      - name: Python Lint
 #        uses: amartins-alexandre/github-actions/.github/workflows/python-lint.yml@main
