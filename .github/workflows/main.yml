@@ -15,17 +15,17 @@ jobs:
 
       - name: Read project version
         id: project-version
-        run: echo ::set-output name=version::$(cat ./version.txt)
+        run: echo "version=$(cat ./version.txt)" >> $GITHUB_OUTPUT
 
-      - name: Echo Version
-        run: echo "${{ steps.project-version.outputs.version }}"
+      - name: Project version
+        run: echo ${{ steps.project-version.outputs.version }}
 
-#      - name: Python Lint
-#        uses: amartins-alexandre/github-actions/.github/workflows/python-lint.yml@main
-#
+      - name: Python Lint
+        uses: amartins-alexandre/github-actions/.github/workflows/python-lint.yml@main
+
 #      - name: Python Test
 #        uses: amartins-alexandre/github-actions/.github/workflows/python-test.yml@main
-#
+
 #      - name: Docker Image
 #        uses: amartins-alexandre/github-actions/.github/workflows/docker.yml@main
 #        with:
@@ -33,4 +33,5 @@ jobs:
 #          docker-password: ${{ secrets.DOCKER_PASSWORD }}
 #          docker-tag: ${{ secrets.DOCKER_USERNAME }}/user-fastapi
 #          version: ${{ steps.project-version.outputs.version }}
+
 
