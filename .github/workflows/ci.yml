@@ -1,0 +1,16 @@
+name: Pipeline CI
+run-name: Run pipeline CI on Python code
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  docker:
+    name: Docker Image
+    uses: amartins-alexandre/github-actions/.github/workflows/docker.yml@main
+    with:
+      docker-username: ${{ secrets.DOCKER_USERNAME }}
+      docker-password: ${{ secrets.DOCKER_PASSWORD }}
+      docker-tag: ${{ secrets.DOCKER_USERNAME }}/user-fastapi
+      version: 0.1.0
