@@ -15,7 +15,7 @@ jobs:
 
       - name: Read project version
         id: project-version
-        run: echo ::set-output name=version::$(cat ./.project-version)
+        run: echo ::set-output name=version::$(cat ./version.txt)
 
       - name: Echo Version
         run: echo "${{ steps.project-version.outputs.version }}"
