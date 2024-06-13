@@ -1,6 +1,7 @@
 import os
 
-APP_PROFILE: str = os.getenv("APP_PROFILE", "dev")
+APP_PROFILE: str = os.getenv("ACTIVE_PROFILE", "dev")
+SEM_VER: str = open(os.path.join(os.path.dirname(os.getcwd()), '.project_version'), 'r').read().strip()
 API_V1_STR: str = "/api/v1"
 
 # Postgres

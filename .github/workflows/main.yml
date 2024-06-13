@@ -1,0 +1,33 @@
+name: Pipeline CI
+run-name: Run pipeline CI on Python code
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  ci:
+    name: Project Version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Read project version
+        id: project-version
+        run: echo ::set-output name=version::$(cat .project-version)
+
+#      - name: Python Lint
+#        uses: amartins-alexandre/github-actions/.github/workflows/python-lint.yml@main
+#
+#      - name: Python Test
+#        uses: amartins-alexandre/github-actions/.github/workflows/python-test.yml@main
+#
+#      - name: Docker Image
+#        uses: amartins-alexandre/github-actions/.github/workflows/docker.yml@main
+#        with:
+#          docker-username: ${{ secrets.DOCKER_USERNAME }}
+#          docker-password: ${{ secrets.DOCKER_PASSWORD }}
+#          docker-tag: ${{ secrets.DOCKER_USERNAME }}/user-fastapi
+#          version: ${{ steps.project-version.outputs.version }}
+
