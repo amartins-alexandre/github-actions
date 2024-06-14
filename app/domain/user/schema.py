@@ -15,14 +15,21 @@ class UserBase(BaseModel):
     id: UUID4
 
 
-class UserUpdatedOutput(UserBase):
+class UserInput(BaseModel):
     name: str
     email: str
 
     _normalize_name = field_validator('name')(normalize)
 
+    class Config:
+        from_attributes = True
 
-class UserOutput(UserUpdatedOutput):
+
+class UserUpdatedOutput(UserInput):
+    pass
+
+
+class UserOutput(UserUpdatedOutput, UserBase):
     created_at: datetime
     updated_at: datetime | None
 
@@ -31,10 +38,3 @@ class UserOutput(UserUpdatedOutput):
 
     class Config:
         from_attributes = True
-
-
-class UserInput(BaseModel):
-    name: str
-    email: str
-
-    _normalize_name = field_validator('name')(normalize)

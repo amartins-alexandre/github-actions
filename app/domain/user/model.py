@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Column, String, DateTime, Table, MetaData, UUID, text
+from sqlalchemy import Column, String, DateTime, MetaData, UUID, text
 from sqlalchemy.orm import declarative_base
 
 metadata = MetaData(schema='fastapi')

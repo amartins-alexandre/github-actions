@@ -28,11 +28,11 @@ jobs:
 #    name: Python Test
 #    uses: amartins-alexandre/github-actions/.github/workflows/python-test.yml@main
 
-#  docker-image:
-#    name: Docker Image
-#    uses: amartins-alexandre/github-actions/.github/workflows/docker.yml@main
-#    with:
-#      docker-username: ${{ secrets.DOCKER_USERNAME }}
-#      docker-password: ${{ secrets.DOCKER_PASSWORD }}
-#      docker-tag: ${{ secrets.DOCKER_USERNAME }}/user-fastapi
-#      version: ${{ steps.project-version.outputs.version }}
+  docker-image:
+    name: Docker Image
+    uses: amartins-alexandre/github-actions/.github/workflows/docker.yml@main
+    with:
+      docker-username: ${{ secrets.DOCKER_USERNAME }}
+      docker-password: ${{ secrets.DOCKER_PASSWORD }}
+      docker-tag: ${{ secrets.DOCKER_USERNAME }}/user-fastapi
+      version: ${{ steps.project-version.outputs.version }}

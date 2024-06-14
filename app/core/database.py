@@ -1,26 +1,67 @@
-import os
-from uuid import uuid4
+import contextlib
+from typing import AsyncIterator
 
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import (AsyncConnection, AsyncEngine, AsyncSession,
+                                    async_sessionmaker, create_async_engine)
 
-from .env import DB_USER, DB_PWD, DB_HOST, DB_PORT, DB_NAME
+from app.domain.user.model import Base
 
 
-class PGConnection:
+class DatabaseSessionManager:
     def __init__(self):
-        self.db_user = DB_USER
-        self.db_pwd = DB_PWD
-        self.db_host = DB_HOST
-        self.db_port = DB_PORT
-        self.db_name = DB_NAME
+        self.engine: AsyncEngine | None = None
+        self._session_maker: async_sessionmaker | None = None
 
-    def get_session(self):
-        engine = create_async_engine(
-            f'postgresql+asyncpg://{self.db_user}:{self.db_pwd}@{self.db_host}:{self.db_port}/{self.db_name}',
-            connect_args={
-                'prepared_statement_name_func': lambda: f'__asyncpg_{uuid4()}__',
-            },
-        )
+    def init(self, host: str):
+        self.engine = create_async_engine(host)
+        self._session_maker = async_sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
 
-        return sessionmaker(engine, class_=AsyncSession)
+    async def close(self):
+        if self.engine is None:
+            raise Exception("DatabaseSessionManager is not initialized")
+        await self.engine.dispose()
+        self.engine = None
+        self._session_maker = None
+
+    @contextlib.asynccontextmanager
+    async def connect(self) -> AsyncIterator[AsyncConnection]:
+        if self.engine is None:
+            raise Exception("DatabaseSessionManager is not initialized")
+
+        async with self.engine.begin() as connection:
+            try:
+                yield connection
+            except Exception:
+                await connection.rollback()
+                raise
+
+    @contextlib.asynccontextmanager
+    async def session(self) -> AsyncIterator[AsyncSession]:
+        if self._session_maker is None:
+            raise Exception("DatabaseSessionManager is not initialized")
+
+        session = self._session_maker()
+        try:
+            yield session
+        except Exception:
+            await session.rollback()
+            raise
+        finally:
+            await session.close()
+
+    # Used for testing
+    @staticmethod
+    async def create_tables(connection: AsyncConnection):
+        await connection.run_sync(Base.metadata.create_all)
+
+    @staticmethod
+    async def drop_tables(connection: AsyncConnection):
+        await connection.run_sync(Base.metadata.drop_all)
+
+
+sessionmanager = DatabaseSessionManager()
+
+
+async def get_db():
+    async with sessionmanager.session() as session:
+        yield session
