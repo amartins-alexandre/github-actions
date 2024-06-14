@@ -1,17 +1,17 @@
-from pydantic import UUID4
-from sqlalchemy.future import select
-
-from sqlalchemy import update
 from typing import List
 
-from app.core.database import PGConnection
+from pydantic import UUID4
+from sqlalchemy import update
+from sqlalchemy.future import select
+
 from .model import User
 from .schema import UserInput
+from ...core.database import Connection
 
 
 class UserService:
-    def __init__(self):
-        self.async_session = PGConnection().get_session()
+    def __init__(self, connection: Connection):
+        self.async_session = connection.get_session()
 
     async def create(self, user_input: UserInput) -> None:
         async with self.async_session() as session:

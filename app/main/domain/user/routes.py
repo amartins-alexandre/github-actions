@@ -5,9 +5,10 @@ from pydantic import UUID4
 
 from .schema import UserOutput, UserInput, UserUpdatedOutput
 from .service import UserService
+from ...core.database import Connection
 
 user_router = APIRouter(prefix='/user')
-service = UserService()
+service = UserService(Connection())
 
 
 @user_router.get('/',

@@ -1,4 +1,3 @@
-import os
 from uuid import uuid4
 
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
@@ -7,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from .env import DB_USER, DB_PWD, DB_HOST, DB_PORT, DB_NAME
 
 
-class PGConnection:
+class Connection:
     def __init__(self):
         self.db_user = DB_USER
         self.db_pwd = DB_PWD
