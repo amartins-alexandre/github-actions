@@ -34,7 +34,7 @@ jobs:
     needs:
       - python-lint
     with:
-      docker-username: ${{ secrets.DOCKER_USERNAME }}
-      docker-password: ${{ secrets.DOCKER_PASSWORD }}
-      docker-tag: ${{ secrets.DOCKER_USERNAME }}/user-fastapi
+      docker-username: ${{ secrets.DockerUsername }}
+      docker-password: ${{ secrets.DockerPassword }}
+      docker-tag: ${{ secrets.DockerUsername }}/user-fastapi
       version: ${{ steps.project-version.outputs.version }}
