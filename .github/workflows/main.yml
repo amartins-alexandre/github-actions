@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Read project version
         id: project-version
@@ -31,8 +31,10 @@ jobs:
   docker-image:
     name: Docker Image
     uses: amartins-alexandre/github-actions/.github/workflows/docker.yml@main
+    needs:
+      - python-lint
     with:
-      docker-username: ${{ secrets.DOCKER_USERNAME }}
-      docker-password: ${{ secrets.DOCKER_PASSWORD }}
-      docker-tag: ${{ secrets.DOCKER_USERNAME }}/user-fastapi
+      docker-username: ${{ secrets.DockerUsername }}
+      docker-password: ${{ secrets.DockerPassword }}
+      docker-tag: ${{ secrets.DockerUsername }}/user-fastapi
       version: ${{ steps.project-version.outputs.version }}
