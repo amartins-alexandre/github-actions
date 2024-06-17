@@ -2,9 +2,9 @@ package com.example.feature.user.data
 
 import com.example.feature.user.data.dao.UserDao
 import com.example.feature.user.data.dao.UserTable
-import com.example.feature.user.data.dao.suspendTransaction
 import com.example.feature.user.domain.User
 import com.example.shared.data.Repository
+import com.example.shared.data.suspendTransaction
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.update

@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "com.example"
-version = "0.0.1"
+version = "0.1.0"
 
 application {
     mainClass.set("com.example.ApplicationKt")
@@ -23,6 +23,10 @@ application {
 
 repositories {
     mavenCentral()
+}
+
+task("printProjectVersion") {
+    project.version.let(::println)
 }
 
 dependencies {

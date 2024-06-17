@@ -1,0 +1,26 @@
+name: CI
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  pre-build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Retrieve Version
+      id: retrieve_version
+      run: |
+        echo "::set-output name=VERSION::$(${{github.workspace}}/gradlew -q printProjectVersion)"
+
+    - name: Get version
+      run: |
+        echo "project_version=${{steps.retrieve_version.outputs.VERSION}}" >> $GITHUB_ENV
+
+  build:
+    name: Docker Image CI
+    needs:
+      - pre-build
+    uses: amartins-alexandre/github-actions/.github/workflows/docker-image.yml@main
+    with:
+      project_version: ${{ env.project_version }}
